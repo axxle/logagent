@@ -1,8 +1,15 @@
 package ru.axxle.logagent;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -100,6 +107,18 @@ public class LogAgent {
         String s = builder.toString();
         s = s.substring(s.length() - (end - start - 1), s.length()-1);
         System.out.println(s);
+        printToLogFile(s);
         socket.close();
+    }
+
+    public static void printToLogFile(String s){
+        String filePath = "./output.log";
+        String text = s;
+        try {
+            Files.write(Paths.get(filePath), text.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.APPEND);
+        }
+        catch (IOException e) {
+            System.out.println(e);
+        }
     }
 }
