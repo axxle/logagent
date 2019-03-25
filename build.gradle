@@ -1,0 +1,18 @@
+apply plugin: "java"
+
+task incrementBuild {
+    String build = new File("version.properties").newReader().readLine().split("=")[1]
+    Integer buildInt = new Integer(build)
+    new File("version.properties").write("BUILD="+ ++buildInt)
+    version="1.0."+build
+}
+
+jar.dependsOn(incrementBuild)
+
+repositories{
+    mavenCentral()
+    mavenLocal()
+}
+
+dependencies{
+}
